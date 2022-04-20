@@ -40,7 +40,7 @@ class HelloController {
     }
     @GetMapping("/divide/{num1}/by/{num2}")
     @ResponseBody
-    public int responseDivide(@PathVariable int num1, @PathVariable int num2)
+    public Double responseDivide(@PathVariable double num1, @PathVariable double num2)
     {
         return num1 / num2;
     }

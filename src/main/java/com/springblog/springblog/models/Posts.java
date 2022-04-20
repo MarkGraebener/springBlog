@@ -1,4 +1,4 @@
-package com.springblog.springblog;
+package com.springblog.springblog.models;
 
 public class Posts
 {
