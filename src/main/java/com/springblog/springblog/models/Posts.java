@@ -19,7 +19,7 @@ public class Posts
         this.title = title;
         this.body = body;
     }
-
+public Posts(){};
     public String getTitle() {
         return title;
     }

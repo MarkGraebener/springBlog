@@ -2,7 +2,7 @@ package com.springblog.springblog;
 
 
 import com.springblog.springblog.models.Posts;
-import com.springblog.springblog.repositories.AdRepository;
+import com.springblog.springblog.repositories.PostRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,23 +10,29 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class PostController
 {
+private final PostRepository postDao;
 
-    @GetMapping("/")
-    public String hello(@PathVariable Model model)
-    {
-        Posts post1 = new Posts("My First Post", "This is where i will rant");
-        model.addAttribute("post1", post1);
-        return "/Posts/index";
-    };
+    public PostController(PostRepository postDao) {
+        this.postDao = postDao;
+    }
+//    @GetMapping("/")
+//    public String hello( Model model)
+//    {
+//        Posts post1 = new Posts("My First Post", "This is where i will rant");
+//        model.addAttribute("post1", post1);
+//        return "/Posts/index";
+//    };
 
     @GetMapping("/posts")
-    @ResponseBody
-    public String posts()
+
+    public String posts(Model model)
     {
-        return "This is the posts page!";
+        model.addAttribute("posts",
+                postDao.findAll());
+        return "Posts/index";
     };
 
-    @RequestMapping(path = "/posts/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/Posts/{id}", method = RequestMethod.GET)
 
     public String postsById(@PathVariable String id, Model model)
     {
@@ -37,18 +43,18 @@ public class PostController
     };
 
     @RequestMapping(path = "/posts/create", method = RequestMethod.GET)
-    @ResponseBody
-    public String viewPostCreate()
+    public String viewPostCreate(Model model)
     {
+model.addAttribute("post", new Posts());
 
-
-        return  "/Posts/index";
+        return  "/Posts/createPosts";
     };
 
-//    @PostMapping("/posts/create")
-//    @ResponseBody
-//    public String PostCreated()
-//    {
-//        return  " this is to create a new post";
-//    }
+    @PostMapping("/posts/create")
+
+    public String PostCreated(@ModelAttribute Posts post)
+    {
+        postDao.save(post);
+        return  " redirect:/post";
+    }
 };
