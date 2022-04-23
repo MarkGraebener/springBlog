@@ -55,6 +55,6 @@ model.addAttribute("post", new Posts());
     public String PostCreated(@ModelAttribute Posts post)
     {
         postDao.save(post);
-        return  " redirect:/post";
+        return  "Posts/index";
     }
 };
