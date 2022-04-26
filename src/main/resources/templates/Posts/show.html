@@ -1,12 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <title>Show Posts</title>
+    <meta charset="UTF-8">
+    <title>Single Post View</title>
 </head>
 <body>
 
-<h1>This is the posts page</h1>
+
+<h4>Post object to view test -</h4>
+<h1 th:text="${singlePost.title}"></h1>
+<p th:text="${singlePost.body}"></p>
 
 </body>
 </html>

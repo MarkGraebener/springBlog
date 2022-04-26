@@ -1,18 +1,21 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <title>Home</title>
+    <meta charset="UTF-8">
+    <title>Index of all posts</title>
 </head>
 <body>
 
-<h1>This is the home page</h1>
-<div th:each="post : ${posts}">
-<h1><span th:text="${post.getTitle()}"></span></h1>
-<h1><span th:text="${post.getBody()}"></span></h1>
+<p>Create your new post!<br>
+    <a th:href="@{/posts/create}">Head to create a post!</a></p>
+
+
+<div th:each="post : ${allPosts}">
+    <h3 th:text="${post.title}"></h3>
+    <p th:text="${post.body}" />
+    <a th:href="@{'/posts/{id}'(id = ${post.id})}">Go to this post</a>
 </div>
-<h2><a href="templates/Posts/creatPost"></a></h2>
-<!--<h1><span th:text="${post2.getTitle()}"></span></h1>-->
-<!--<h1><span th:text="${post2.getBody()}"></span></h1>-->
+
+
 </body>
 </html>

@@ -8,53 +8,55 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-public class PostController
-{
-private final PostRepository postDao;
+public class PostController {
+
+    private final PostRepository postDao;
 
     public PostController(PostRepository postDao) {
         this.postDao = postDao;
     }
-//    @GetMapping("/")
-//    public String hello( Model model)
-//    {
-//        Posts post1 = new Posts("My First Post", "This is where i will rant");
-//        model.addAttribute("post1", post1);
-//        return "/Posts/index";
-//    };
 
     @GetMapping("/posts")
+    public String postsIndex(Model model){
+//                Inside the method that shows all the posts, create a new array list and add two post objects to it, then pass that list to the view.
+//                ArrayList<Post> allPosts = new ArrayList<>();
+//                allPosts.add(new Post("Good news - I adopted all of the cats", "Come on down to my house and experience northwest San Antonio's first cat cafe called Howlin' Howell's Cat Cafe - WOW!"));
+//                allPosts.add(new Post("New special at Howlin' Howell's Cat Cafe!", "We've added a range of new coffee products and TV screens for LAN parties, video game parties, sports events, and otherwise! Call 210-555-5555 to make a reservation today :D"));
+        //New exercise: Let's move into grabbing our posts from the database instead :)
 
-    public String posts(Model model)
-    {
-        model.addAttribute("posts",
-                postDao.findAll());
-        return "Posts/index";
-    };
+        ArrayList<Post> allPosts = (ArrayList<Post>) postDao.findAll();
 
-    @RequestMapping(path = "/Posts/{id}", method = RequestMethod.GET)
+        model.addAttribute("allPosts", allPosts);
 
-    public String postsById(@PathVariable String id, Model model)
-    {
-//        Posts post2 = new Posts("My Second Post", "This is where i will rant");
-//        model.addAttribute("post2", post2);
+        return "posts/index";
+    }
 
-        return  "/Posts/index";
-    };
+    @GetMapping("/posts/{id}")
+    public String postView(@PathVariable long id, Model model){
+        //Old exer: hardcoded single post
+//                model.addAttribute("singlePost", new Post("Cats are invading my neighborhood", "Can someone please help me with all of these cats??"));
+        //Now: Let's consume the id with a postDao method. . perhaps getById?
+        Post post = postDao.getById(id);
 
-    @RequestMapping(path = "/posts/create", method = RequestMethod.GET)
-    public String viewPostCreate(Model model)
-    {
-model.addAttribute("post", new Posts());
+        model.addAttribute("singlePost", post);
 
-        return  "/Posts/createPosts";
-    };
+        return "posts/show";
+    }
+
+    @GetMapping("/posts/create")
+    public String postCreate(Model model){
+        model.addAttribute("newPost", new Post());
+        return "posts/create";
+    }
 
     @PostMapping("/posts/create")
+    public String submitPost(@RequestParam(name = "title") String title, @RequestParam(name = "body") String body){
 
-    public String PostCreated(@ModelAttribute Posts post)
-    {
-        postDao.save(post);
-        return  "Posts/index";
+        System.out.println("Title:" + title + " and the body was: " + body);
+
+        postDao.save(new Post(title, body));
+
+        return "redirect:/posts";
     }
-};
+
+}
